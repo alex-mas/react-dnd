@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNEXT",                       
+    "module": "es2022",                     
+    "strict": true,
+    "skipLibCheck": true,                   
+    "esModuleInterop": true,
+    "outDir": "bin",      
+    "rootDir": "./src",       
+    "experimentalDecorators": false,        
+    "emitDecoratorMetadata": false,       
+    "declaration": true
+  },
+  "include": [
+    "src"
+  ]
+}
