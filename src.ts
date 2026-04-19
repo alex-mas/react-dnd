@@ -1,7 +1,7 @@
 import { act, RefObject, useEffect, useRef } from "react";
 
 export type OnDragHandler = (event: DragEvent) => void;
-export type UseDragConfig<RefType extends HTMLElement> = {
+export type UseDragConfig<RefType extends HTMLElement | null> = {
   onStart?: OnDragHandler;
   onDragging?: OnDragHandler;
   onDragOver?: OnDragHandler;
@@ -12,7 +12,7 @@ export type UseDragConfig<RefType extends HTMLElement> = {
   draggable: boolean;
   ref?: RefObject<RefType>
 };
-export const useDnD = <RefType extends HTMLElement>({
+export const useDnD = <RefType extends HTMLElement | null>({
   onStart,
   onDragging,
   onDrop,
