@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "packageManager": "yarn@4.14.1",
   "license": "MIT",
-  "main": "src/react-dnd.ts",
+  "main": "src.ts",
   "scripts": {
     "build": "tsc"
   },

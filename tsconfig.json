@@ -6,12 +6,11 @@
     "skipLibCheck": true,                   
     "esModuleInterop": true,
     "outDir": "bin",      
-    "rootDir": "./src",       
+    "rootDir": "./",       
     "experimentalDecorators": false,        
     "emitDecoratorMetadata": false,       
     "declaration": true
   },
   "include": [
-    "src"
-  ]
+    "src.ts" ]
 }
