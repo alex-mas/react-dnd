@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { act, RefObject, useEffect, useRef } from "react";
 
 export type OnDragHandler = (event: DragEvent) => void;
-export type UseDragConfig = {
+export type UseDragConfig<RefType extends HTMLElement> = {
   onStart?: OnDragHandler;
   onDragging?: OnDragHandler;
   onDragOver?: OnDragHandler;
@@ -10,6 +10,7 @@ export type UseDragConfig = {
   onDrop?: OnDragHandler;
   droppable: boolean;
   draggable: boolean;
+  ref?: RefObject<RefType>
 };
 export const useDnD = <RefType extends HTMLElement>({
   onStart,
@@ -20,8 +21,10 @@ export const useDnD = <RefType extends HTMLElement>({
   onDragLeave,
   droppable,
   draggable,
-}: UseDragConfig) => {
-  const ref = useRef<RefType>(null);
+  ref
+}: UseDragConfig<RefType>) => {
+  const uncontrolledRef = useRef<RefType>(null);
+  const actualRef = ref ? ref : uncontrolledRef;
   useEffect(() => {
     let onDragOverHandler: OnDragHandler | undefined = droppable
       ? (e) => {
@@ -38,54 +41,54 @@ export const useDnD = <RefType extends HTMLElement>({
         onDragOverHandler = onDragOver;
       }
     }
-    if (ref.current) {
-      ref.current.draggable = draggable;
+    if (actualRef.current) {
+      actualRef.current.draggable = draggable;
 
       if (onStart) {
-        ref.current.addEventListener("dragstart", onStart);
+        actualRef.current.addEventListener("dragstart", onStart);
       }
       if (onDragging) {
-        ref.current.addEventListener("drag", onDragging);
+        actualRef.current.addEventListener("drag", onDragging);
       }
       if (onDragEnter) {
-        ref.current.addEventListener("dragenter", onDragEnter);
+        actualRef.current.addEventListener("dragenter", onDragEnter);
       }
       if (onDragLeave) {
-        ref.current.addEventListener("dragleave", onDragLeave);
+        actualRef.current.addEventListener("dragleave", onDragLeave);
       }
 
       if (droppable && onDrop) {
-        ref.current.addEventListener("drop", onDrop);
+        actualRef.current.addEventListener("drop", onDrop);
       }
       if (onDragOverHandler) {
-        ref.current.addEventListener("dragover", onDragOverHandler);
+        actualRef.current.addEventListener("dragover", onDragOverHandler);
       }
     }
     return () => {
-      if (ref.current) {
+      if (actualRef.current) {
         if (draggable) {
-          ref.current.draggable = false;
+          actualRef.current.draggable = false;
         }
         if (onStart) {
-          ref.current.addEventListener("dragstart", onStart);
+          actualRef.current.addEventListener("dragstart", onStart);
         }
         if (onDragging) {
-          ref.current.addEventListener("drag", onDragging);
+          actualRef.current.addEventListener("drag", onDragging);
         }
         if (onDragEnter) {
-          ref.current.addEventListener("dragenter", onDragEnter);
+          actualRef.current.addEventListener("dragenter", onDragEnter);
         }
         if (onDragLeave) {
-          ref.current.addEventListener("dragleave", onDragLeave);
+          actualRef.current.addEventListener("dragleave", onDragLeave);
         }
         if (droppable && onDrop) {
-          ref.current.addEventListener("drop", onDrop);
+          actualRef.current.addEventListener("drop", onDrop);
         }
         if (onDragOverHandler) {
-          ref.current.addEventListener("dragover", onDragOverHandler);
+          actualRef.current.addEventListener("dragover", onDragOverHandler);
         }
       }
     };
-  }, [onStart, onDragging, onDrop, ref.current]);
-  return ref;
+  }, [onStart, onDragging, onDrop, actualRef.current]);
+  return actualRef;
 };
