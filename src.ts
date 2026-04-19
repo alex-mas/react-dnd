@@ -87,4 +87,5 @@ export const useDnD = <RefType extends HTMLElement>({
       }
     };
   }, [onStart, onDragging, onDrop, ref.current]);
+  return ref;
 };
